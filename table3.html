@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>table_gypsobat</title>
+<style>
+*{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+body{
+    font-family: Helvetica;
+    -webkit-font-smoothing: antialiased;
+    background: rgb(239, 233, 218);
+}
+h2{
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    padding: 30px 0;
+}
+
+/* Table Styles */
+
+.table-wrapper{
+    margin: 100px 70px 70px;
+    box-shadow: 0px 35px 50px rgba( 0, 0, 0, 0.2 );
+}
+
+.fl-table {
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: normal;
+    border: none;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 100%;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.fl-table td, .fl-table th {
+    text-align: center;
+    padding: 8px;
+}
+
+.fl-table td {
+    border-right: 1px solid #f8f8f8;
+    font-size: 12px;
+}
+
+.fl-table thead th {
+    color: #ffffff;
+    background: #1c1818;
+}
+
+
+.fl-table thead th:nth-child(odd) {
+    color: #ffffff;
+    background: #de8f3b;
+}
+
+.fl-table tr:nth-child(even) {
+    background: #F8F8F8;
+}
+
+/* Responsive */
+
+@media (max-width: 767px) {
+    .fl-table {
+        display: block;
+        width: 100%;
+    }
+    .table-wrapper:before{
+        content: "Scroll horizontally >";
+        display: block;
+        text-align: right;
+        font-size: 11px;
+        color: white;
+        padding: 0 0 10px;
+    }
+    .fl-table thead, .fl-table tbody, .fl-table thead th {
+        display: block;
+    }
+    .fl-table thead th:last-child{
+        border-bottom: none;
+    }
+    .fl-table thead {
+        float: left;
+    }
+    .fl-table tbody {
+        width: auto;
+        position: relative;
+        overflow-x: auto;
+    }
+    .fl-table td, .fl-table th {
+        padding: 20px .625em .625em .625em;
+        height: 60px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 120px;
+        font-size: 13px;
+        text-overflow: ellipsis;
+    }
+    .fl-table thead th {
+        text-align: left;
+        border-bottom: 1px solid #f7f7f9;
+    }
+    .fl-table tbody tr {
+        display: table-cell;
+    }
+    .fl-table tbody tr:nth-child(odd) {
+        background: none;
+    }
+    .fl-table tr:nth-child(even) {
+        background: transparent;
+    }
+    .fl-table tr td:nth-child(odd) {
+        background: #F8F8F8;
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tr td:nth-child(even) {
+        border-right: 1px solid #E6E4E4;
+    }
+    .fl-table tbody td {
+        display: block;
+        text-align: center;
+    }
+}
+
+
+
+
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #333; /* Dark background for the container */
+    border-radius: 8px;
+    margin: 10px;
+}
+
+.btn {
+    color: #fff; /* White text */
+    background-color: #555; /* Grey background for the button */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #777; /* Lighter grey on hover */
+    transform: scale(1.05);
+}
+
+.btn.left {
+    margin-left: 10px;
+}
+
+.btn.right {
+    margin-right: 10px;
+}
+
+@media (max-width: 600px) {
+    .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 5px 0;
+    }
+}
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <h1>GYPSOBAT Surface Calculator</h1>
+        <div class="input-group">
+            <label for="surface">Surface (m²) :</label>
+            <input type="number" id="surface" name="surface" min="0" required>
+            <button onclick="calculateQuantities()">Calculer</button>
+        </div>
+
+
+
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+            <tr>
+                <th>Product</th>
+                <th>Simple 0.6</th>
+                <th>Simple 0.4</th>
+                <th>Accole 0.6</th>
+                <th>Accole 0.4</th>
+            </tr>
+            </thead>
+            <tbody id="productTable">
+                <tr>
+                  <td>Plaque : m²</td>
+                  <td class="calc" data-factor="2.10"></td>
+                  <td class="calc" data-factor="2.10"></td>
+                  <td class="calc" data-factor="2.10"></td>
+                  <td class="calc" data-factor="2.10"></td>
+                </tr>
+            <tr>
+                <td>Rail : ml</td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>
+            </tr>
+            <tr>
+                <td>Montant : ml</td>
+                <td class="calc" data-factor="2,30"></td>
+                <td class="calc" data-factor="3,00"></td>
+                <td class="calc" data-factor="3,80"></td>
+                <td class="calc" data-factor="5,50"></td>
+            </tr>
+            <tr>
+                <td>CHEV A FRAPP : pièces</td>
+                <td class="calc" data-factor="2,00"></td>
+                <td class="calc" data-factor="2,00"></td>
+                <td class="calc" data-factor="2,00"></td>
+                <td class="calc" data-factor="2,00"></td>
+            </tr>
+            <tr>
+                <td>Vis TEKS : pièces</td>
+                <td class="calc" data-factor="2,00"></td>
+                <td class="calc" data-factor="2,00"></td>
+                <td class="calc" data-factor="6,00"></td>
+                <td class="calc" data-factor="8,00"></td>
+            </tr>
+            <tr>
+                <td>Vis 25 - 35 : pièces</td>
+                <td class="calc" data-factor="25,00"></td>
+                <td class="calc" data-factor="30,00"></td>
+                <td class="calc" data-factor="35,00"></td>
+                <td class="calc" data-factor="45,00"></td>
+            </tr>
+            <tr>
+                <td>Enduit à joint en pate : Kg</td>
+                <td class="calc" data-factor="1,00"></td>
+                <td class="calc" data-factor="1,00"></td>
+                <td class="calc" data-factor="1,00"></td>
+                <td class="calc" data-factor="1,00"></td>
+            </tr>
+            <tr>
+                <td>BANDA : Kg</td>
+                <td class="calc" data-factor="0.70"></td>
+                <td class="calc" data-factor="0.70"></td>
+                <td class="calc" data-factor="0.70"></td>
+                <td class="calc" data-factor="0.70"></td>            </tr>
+            </tr>
+            <tr>
+                <td>Bande résiliente : ml</td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>
+                <td class="calc" data-factor="0.90"></td>            </tr>
+            </tr>
+            <tr>
+                <td>Bande Joint : ml</td>
+                <td class="calc" data-factor="3,00"></td>
+                <td class="calc" data-factor="3,00"></td>
+                <td class="calc" data-factor="3,00"></td>
+                <td class="calc" data-factor="3,00"></td>            </tr>
+            </tr>
+            <tr>
+                <td>Isolant : m²</td>
+                <td class="calc" data-factor="1,05"></td>
+                <td class="calc" data-factor="1,05"></td>
+                <td class="calc" data-factor="1,05"></td>
+                <td class="calc" data-factor="1,05"></td>            </tr>
+            </tr>
+        </tbody> </table>
+
+    </div>
+    div class="button-container">
+       <a href="choix.html"> <button class="btn left">Retour</button></a>
+        <a href="table3s.html"> <button class="btn right">Sous Catégorie</button></a>
+    </div>
+</body>
+<script>
+    function calculateQuantities() {
+      // Get the value from the surface input
+      const surfaceValue = document.getElementById('surface').value;
+
+      // Parse the input as a float
+      const surface = parseFloat(surfaceValue);
+      if (isNaN(surface)) {
+        alert('Please enter a valid number for surface area.');
+        return;
+      }
+
+      // Get all cells that need calculation
+      const cells = document.querySelectorAll('#productTable .calc');
+
+      // Iterate over each cell and update its content
+      cells.forEach(cell => {
+        // Get the multiplication factor from data attribute
+        const factor = parseFloat(cell.getAttribute('data-factor'));
+
+        // Calculate the new value
+        const newValue = (surface * factor).toFixed(2);
+
+        // Update the cell content
+        cell.innerText = newValue;
+      });
+    }
+  </script>
+</html>

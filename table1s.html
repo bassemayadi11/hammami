@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GYPSOBAT Surface Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: rgb(239, 233, 218);
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            padding: 20px;
+            color: #333;
+        }
+        .input-group {
+            text-align: center;
+            margin: 20px;
+        }
+        .input-group label, .input-group input, .input-group button {
+            font-size: 16px;
+        }
+        .input-group input {
+            padding: 5px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .input-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .input-group button:hover {
+            background-color: #555;
+        }
+        .table-wrapper {
+            margin: 40px auto;
+            width: 80%;
+            box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+        }
+        .fl-table {
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: normal;
+            border: none;
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100%;
+            white-space: nowrap;
+            background-color: white;
+        }
+        .fl-table td, .fl-table th {
+            text-align: center;
+            padding: 8px;
+        }
+        .fl-table td {
+            border-right: 1px solid #f8f8f8;
+            font-size: 12px;
+        }
+        .fl-table thead th {
+            color: #ffffff;
+            background: #1c1818;
+        }
+        .product-row-black {
+            background-color: black;
+            color: white;
+        }
+        .product-row-white {
+            background-color: white;
+        }
+        .product-row-orange {
+            background-color: orange;
+        }
+        .product-row-green {
+            background-color: green;
+            color: white;
+        }
+        .product-row-yellow {
+            background-color: yellow;
+        }
+        .product-row-pink {
+            background-color: pink;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 8px;
+            margin: 20px auto;
+            width: 80%;
+        }
+        .btn {
+            color: #fff;
+            background-color: #555;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #777;
+            transform: scale(1.05);
+        }
+        .btn.left {
+            margin-left: 10px;
+        }
+        .btn.right {
+            margin-right: 10px;
+        }
+        @media (max-width: 767px) {
+            .table-wrapper {
+                overflow-x: auto;
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GYPSOBAT Surface Calculator</h1>
+        <div class="input-group">
+            <label for="surface">Surface (m²) :</label>
+            <input type="number" id="surface" name="surface" min="0" required>
+            <button onclick="calculateQuantities()">Calculer</button>
+        </div>
+        <div class="table-wrapper">
+            <table class="fl-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Simple 0.6</th>
+                        <th>Simple 0.4</th>
+                        <th>Accole 0.6</th>
+                        <th>Accole 0.4</th>
+                    </tr>
+                </thead>
+                <tbody id="productTable">
+                    <tr class="product-row-black">
+                        <td>Plaque 3*1,2 /plaque</td>
+                        <td class="calc" data-factor="0.583"></td>
+                        <td class="calc" data-factor="0.58"></td>
+                        <td class="calc" data-factor="0.58"></td>
+                        <td class="calc" data-factor="0.58"></td>
+                    </tr>
+                    <tr class="product-row-black">
+                        <td>Plaque 2,8*1,2 /plaque</td>
+                        <td class="calc" data-factor="0.625"></td>
+                        <td class="calc" data-factor="0.63"></td>
+                        <td class="calc" data-factor="0.63"></td>
+                        <td class="calc" data-factor="0.63"></td>
+                    </tr>
+                    <tr class="product-row-black">
+                        <td>Plaque 2,5*1,2 /plaque</td>
+                        <td class="calc" data-factor="0.70"></td>
+                        <td class="calc" data-factor="0.70"></td>
+                        <td class="calc" data-factor="0.70"></td>
+                        <td class="calc" data-factor="0.70"></td>
+                    </tr>
+                    <tr class="product-row-black">
+                        <td>Plaque 3*0,9 /plaque</td>
+                        <td class="calc" data-factor="0.778"></td>
+                        <td class="calc" data-factor="0.78"></td>
+                        <td class="calc" data-factor="0.78"></td>
+                        <td class="calc" data-factor="0.78"></td>
+                    </tr>
+                    <tr class="product-row-black">
+                        <td>Plaque 2,7*1,2 /plaque</td>
+                        <td class="calc" data-factor="0.648"></td>
+                        <td class="calc" data-factor="0.65"></td>
+                        <td class="calc" data-factor="0.65"></td>
+                        <td class="calc" data-factor="0.65"></td>
+                    </tr>
+                    <tr class="product-row-black">
+                        <td>Plaque 2,4*1,2 /plaque</td>
+                        <td class="calc" data-factor="0.729"></td>
+                        <td class="calc" data-factor="0.73"></td>
+                        <td class="calc" data-factor="0.73"></td>
+                        <td class="calc" data-factor="0.73"></td>
+                    </tr>
+                    <tr class="product-row-white">
+                        <td>Rail 3m/pc</td>
+                        <td class="calc" data-factor="0.30"></td>
+                        <td class="calc" data-factor="0.30"></td>
+                        <td class="calc" data-factor="0.30"></td>
+                        <td class="calc" data-factor="0.30"></td>
+                    </tr>
+                    <tr class="product-row-orange">
+                        <td>Montant 2,8m /pc</td>
+                        <td class="calc" data-factor="0.821"></td>
+                        <td class="calc" data-factor="1.07"></td>
+                        <td class="calc" data-factor="1.36"></td>
+                        <td class="calc" data-factor="1.96"></td>
+                    </tr>
+                    <tr class="product-row-orange">
+                        <td>Montant 3m /pc</td>
+                        <td class="calc" data-factor="0.767"></td>
+                        <td class="calc" data-factor="1.00"></td>
+                        <td class="calc" data-factor="1.27"></td>
+                        <td class="calc" data-factor="1.83"></td>
+                    </tr>
+                    <tr class="product-row-orange">
+                        <td>Montant 6m /pc</td>
+                        <td class="calc" data-factor="0.383"></td>
+                        <td class="calc" data-factor="0.50"></td>
+                        <td class="calc" data-factor="0.63"></td>
+                        <td class="calc" data-factor="0.92"></td>
+                    </tr>
+                    <tr class="product-row-white">
+                        <td>CHEV A FRAPP /Bte 200</td>
+                        <td class="calc" data-factor="0.01"></td>
+                        <td class="calc" data-factor="0.01"></td>
+                        <td class="calc" data-factor="0.01"></td>
+                        <td class="calc" data-factor="0.01"></td>
+                    </tr>
+                    <tr class="product-row-white">
+                        <td>Vis TEKS /Bte 1000</td>
+                        <td class="calc" data-factor="0.002"></td>
+                        <td class="calc" data-factor="0.22"></td>
+                        <td class="calc" data-factor="0.55"></td>
+                        <td class="calc" data-factor="0.85"></td>
+                    </tr>
+                    <tr class="product-row-white">
+                        <td>Vis 25 - 35 /Bte 1000</td>
+                        <td class="calc" data-factor="0.55"></td>
+                        <td class="calc" data-factor="0.02"></td>
+                        <td class="calc" data-factor="0.552"></td>
+                        <td class="calc" data-factor="0.87"></td>
+                    </tr>
+                    <tr class="product-row-green">
+                        <td>Enduit à joint en pate / Seau 25Kg</td>
+                        <td class="calc" data-factor="0.01"></td>
+                        <td class="calc" data-factor="0.08"></td>
+                        <td class="calc" data-factor="0.05"></td>
+                        <td class="calc" data-factor="0.07"></td>
+                    </tr>
+                    <tr class="product-row-green">
+                        <td>BANDA 4H -7H / Sac 25Kg</td>
+                        <td class="calc" data-factor="0.07"></td>
+                        <td class="calc" data-factor="0.070"></td>
+                        <td class="calc" data-factor="0.070"></td>
+                        <td class="calc" data-factor="0.070"></td>
+                    </tr>
+                    <tr class="product-row-green">
+                        <td>BANDA 2H / Sac 20Kg</td>
+                        <td class="calc" data-factor="0.0070"></td>
+                        <td class="calc" data-factor="0.370"></td>
+                        <td class="calc" data-factor="0.270"></td>
+                        <td class="calc" data-factor="0.270"></td>
+                    </tr>
+                    <tr class="product-row-white">
+                        <td>Bande résiliente /Rl</td>
+                        <td class="calc" data-factor="0.090"></td>
+                        <td class="calc" data-factor="0.190"></td>
+                        <td class="calc" data-factor="0.190"></td>
+                        <td class="calc" data-factor="0.790"></td>
+                    </tr>
+                    <tr class="product-row-yellow">
+                        <td>Bande Joint Papier /Rouleau</td>
+                        <td class="calc" data-factor="0.800"></td>
+                        <td class="calc" data-factor="0.040"></td>
+                        <td class="calc" data-factor="0.010"></td>
+                        <td class="calc" data-factor="0.500"></td>
+                    </tr>
+                    <tr class="product-row-yellow">
+                        <td>Bande Joint Fibre /Rouleau</td>
+                        <td class="calc" data-factor=".100"></td>
+                        <td class="calc" data-factor="0.500"></td>
+                        <td class="calc" data-factor="0.020"></td>
+                        <td class="calc" data-factor="0.6600"></td>
+                    </tr>
+                    <tr class="product-row-pink">
+                        <td>ISOVER Par 4+ 45mm Rl=18m²</td>
+                        <td class="calc" data-factor="0.105"></td>
+                        <td class="calc" data-factor="0.405"></td>
+                        <td class="calc" data-factor="0.05"></td>
+                        <td class="calc" data-factor="0.105"></td>
+                    </tr>
+                    <tr class="product-row-pink">
+                        <td>ISOVER Par 4+ 70mm Rl=12m²</td>
+                        <td class="calc" data-factor="0.105"></td>
+                        <td class="calc" data-factor="0.015"></td>
+                        <td class="calc" data-factor="0.105"></td>
+                        <td class="calc" data-factor="0.015"></td>
+                    </tr>
+                    <tr class="product-row-pink">
+                        <td>ISOVER IBR-K 50mm Rl=15,6m²</td>
+                        <td class="calc" data-factor="0.05"></td>
+                        <td class="calc" data-factor="0.05"></td>
+                        <td class="calc" data-factor="0.05"></td>
+                        <td class="calc" data-factor="0.05"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="button-container">
+            <a href="table1.html"> <button class="btn left">Retour</button></a>
+            <!-- <a href="table1s.html"> <button class="btn right">Sous Catégorie</button></a> -->
+        </div>
+    </div>
+
+    <script>
+        function calculateQuantities() {
+            var surface = document.getElementById("surface").value;
+            if (surface > 0) {
+                var rows = document.querySelectorAll('.calc');
+                rows.forEach(function(row) {
+                    var factor = row.getAttribute('data-factor');
+                    row.textContent = (surface * factor).toFixed(3);
+                });
+            } else {
+                alert("Please enter a valid surface area.");
+            }
+        }
+    </script>
+</body>
+</html>
